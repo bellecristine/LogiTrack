@@ -1,0 +1,75 @@
+# ---------------------------
+# 📦 NODE.JS / BACKEND API
+# ---------------------------
+node_modules/
+.env
+uploads/
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Ignore SQLite database files (SQLite)
+*.sqlite
+*.db
+
+# ---------------------------
+# 🧠 GENERAL
+# ---------------------------
+*.class
+*.pyc
+*.swp
+*.swo
+.DS_Store
+*.iml
+
+# ---------------------------
+# 🔧 VSCODE / IDEs
+# ---------------------------
+.idea/
+*.ipr
+*.iws
+*.iml
+.vscode/
+
+# ---------------------------
+# 🐦 FLUTTER / DART
+# ---------------------------
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+build/
+.melos_tool/
+
+# Flutter iOS
+**/ios/Flutter/.last_build_id
+**/ios/.symlinks/
+**/ios/Pods/
+**/ios/Runner.xcworkspace/
+
+# Flutter Android
+**/android/.gradle/
+**/android/.idea/
+**/android/.settings/
+**/android/build/
+
+# Flutter Web
+.caches/
+
+# Symbolication
+app.*.symbols
+app.*.map.json
+
+# ---------------------------
+# 🔧 MISC
+# ---------------------------
+.migrate_working_dir/
+.history
+.atom/
+.svn/
+buildlog/
+doc/api/
