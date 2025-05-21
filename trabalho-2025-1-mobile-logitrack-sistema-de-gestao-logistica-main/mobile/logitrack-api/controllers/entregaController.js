@@ -1,4 +1,4 @@
-const db = require('../database/db');
+const { salvarEntregaFinalizada } = require('../models/entregaFinalizadaModel');
 
 exports.finalizarEntrega = async (req, res) => {
   const entregaId = req.params.id;
@@ -10,11 +10,12 @@ exports.finalizarEntrega = async (req, res) => {
   }
 
   try {
-    await db.run(
-      `INSERT INTO entregas_finalizadas (entrega_id, latitude, longitude, foto_path, data_hora)
-       VALUES (?, ?, ?, ?, datetime('now'))`,
-      [entregaId, latitude, longitude, fotoPath]
-    );
+    await salvarEntregaFinalizada({
+      entregaId,
+      latitude: parseFloat(latitude),
+      longitude: parseFloat(longitude),
+      fotoPath,
+    });
 
     res.status(201).json({ message: 'Entrega registrada com sucesso' });
   } catch (err) {
