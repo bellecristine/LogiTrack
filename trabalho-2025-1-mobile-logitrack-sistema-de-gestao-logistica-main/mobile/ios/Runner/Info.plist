@@ -45,5 +45,11 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<!-- Permissões adicionadas -->
+   <key>NSCameraUsageDescription</key>
+   <string>Precisamos acessar a câmera para registrar a entrega com foto.</string>
+
+   <key>NSLocationWhenInUseUsageDescription</key>
+   <string>Precisamos da sua localização para rastrear as entregas em tempo real.</string>
 </dict>
 </plist>
