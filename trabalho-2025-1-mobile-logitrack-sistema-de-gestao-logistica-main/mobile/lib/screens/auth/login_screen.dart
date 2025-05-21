@@ -4,11 +4,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../services/auth_service.dart';
 import '../../widgets/custom_button.dart';
-import '../../widgets/custom_text_field.dart';
 import 'register_screen.dart';
 import '../client/client_home_screen.dart';
 import '../driver/driver_home_screen.dart';
-
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -43,14 +41,14 @@ class _LoginScreenState extends State<LoginScreen> {
 
     try {
       final authService = Provider.of<AuthService>(context, listen: false);
-      
+
       // Simulação de login para desenvolvimento
       await Future.delayed(const Duration(seconds: 2));
-      
+
       // Criar usuário de teste com base no email
       final email = _emailController.text.trim().toLowerCase();
       String role;
-      
+
       if (email.contains('client')) {
         role = 'client';
       } else if (email.contains('driver')) {
@@ -60,14 +58,14 @@ class _LoginScreenState extends State<LoginScreen> {
       } else {
         role = 'client'; // Padrão
       }
-      
+
       final user = User(
         id: '1',
         name: 'Usuário Teste',
         email: email,
         role: role,
       );
-      
+
       await authService.saveCurrentUser(user);
 
       if (!mounted) return;
@@ -162,7 +160,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     if (value == null || value.isEmpty) {
                       return 'Por favor, digite seu email';
                     }
-                    if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
+                    if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                        .hasMatch(value)) {
                       return 'Por favor, digite um email válido';
                     }
                     return null;
@@ -229,7 +228,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     TextButton(
                       onPressed: () {
                         Navigator.of(context).push(
-                          MaterialPageRoute(builder: (_) => const RegisterScreen()),
+                          MaterialPageRoute(
+                              builder: (_) => const RegisterScreen()),
                         );
                       },
                       child: const Text('Registre-se'),

@@ -7,7 +7,6 @@ import '../../services/notification_service.dart';
 import '../../services/delivery_service.dart';
 import '../../services/database_service.dart';
 import '../../models/delivery.dart';
-import '../../widgets/delivery_card.dart';
 import '../auth/login_screen.dart';
 import 'delivery_tracking_screen.dart';
 import 'delivery_history_screen.dart';
@@ -39,7 +38,8 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
 
     try {
       final authService = Provider.of<AuthService>(context, listen: false);
-      final databaseService = Provider.of<DatabaseService>(context, listen: false);
+      final databaseService =
+          Provider.of<DatabaseService>(context, listen: false);
       final user = await authService.getCurrentUser();
 
       if (user == null) {
@@ -84,7 +84,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
   Widget build(BuildContext context) {
     final notificationService = Provider.of<NotificationService>(context);
     final authService = Provider.of<AuthService>(context);
-    
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('LogiTrack'),
