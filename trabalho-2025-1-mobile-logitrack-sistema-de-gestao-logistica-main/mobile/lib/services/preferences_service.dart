@@ -5,6 +5,7 @@ class PreferencesService {
   // Chaves para preferências
   static const String _themeKey = 'theme';
   static const String _notificationPreferencesKey = 'notification_preferences';
+  static const String _currentUserKey = 'current_user';
 
   // Salvar tema
   Future<void> saveTheme(String theme) async {
@@ -16,6 +17,35 @@ class PreferencesService {
   Future<String> getTheme() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString(_themeKey) ?? 'light';
+  }
+
+  // Salvar usuário atual
+  Future<void> saveCurrentUser(Map<String, dynamic> userData) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_currentUserKey, jsonEncode(userData));
+  }
+
+  // Obter usuário atual
+  Future<Map<String, dynamic>?> getCurrentUser() async {
+    final prefs = await SharedPreferences.getInstance();
+    final userJson = prefs.getString(_currentUserKey);
+    
+    if (userJson == null) {
+      return null;
+    }
+    
+    try {
+      return Map<String, dynamic>.from(jsonDecode(userJson));
+    } catch (e) {
+      print('Erro ao decodificar usuário: $e');
+      return null;
+    }
+  }
+
+  // Remover usuário atual
+  Future<void> removeCurrentUser() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(_currentUserKey);
   }
 
   // Salvar preferências de notificação
