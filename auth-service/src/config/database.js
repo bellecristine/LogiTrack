@@ -87,4 +87,14 @@ class Database {
   }
 }
 
-module.exports = new Database(); 
+const database = new Database();
+
+// Função para inicializar o banco de dados
+async function initializeDatabase() {
+  return await database.connect();
+}
+
+module.exports = {
+  database,
+  initializeDatabase
+}; 

@@ -12,6 +12,7 @@ import '../auth/login_screen.dart';
 import 'delivery_detail_screen.dart';
 import 'delivery_history_screen.dart';
 import '../client/notification_screen.dart';
+import '../settings_screen.dart';
 
 
 class DriverHomeScreen extends StatefulWidget {
@@ -253,7 +254,6 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                               padding: const EdgeInsets.only(bottom: 16),
                               child: DeliveryCard(
                                 delivery: delivery,
-                                isDriver: true,
                                 onTap: () {
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
@@ -282,8 +282,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                               padding: const EdgeInsets.only(bottom: 16),
                               child: DeliveryCard(
                                 delivery: delivery,
-                                isDriver: true,
-                                showAcceptButton: true,
+                                showActions: true,
                                 onTap: () {
                                   Navigator.of(context).push(
                                     MaterialPageRoute(

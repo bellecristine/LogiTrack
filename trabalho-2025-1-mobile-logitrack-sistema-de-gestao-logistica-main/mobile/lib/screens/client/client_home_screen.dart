@@ -11,6 +11,7 @@ import '../auth/login_screen.dart';
 import 'delivery_tracking_screen.dart';
 import 'delivery_history_screen.dart';
 import 'notification_screen.dart';
+import '../settings_screen.dart';
 
 class ClientHomeScreen extends StatefulWidget {
   const ClientHomeScreen({Key? key}) : super(key: key);
