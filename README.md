@@ -8,6 +8,8 @@ O projeto é composto por:
 - **Auth Service** (Node.js + SQLite) - Microserviço de autenticação
 - **Tracking Service** (Node.js + PostgreSQL) - Microserviço de rastreamento
 - **Mobile App** (Flutter) - Aplicativo para clientes e motoristas
+-
+-
 
 ## 🚀 Instalação Rápida
 
@@ -130,19 +132,6 @@ flutter pub get
 - Tracking Service: porta 3002
 - Use `netstat -ano | findstr :PORTA` para verificar
 
-## 👥 Desenvolvimento
-
-### Estrutura do Projeto
-```
-LogiTrack/
-├── auth-service/           # Microserviço de autenticação
-├── tracking-service/       # Microserviço de rastreamento
-├── trabalho-2025-1-mobile-logitrack-sistema-de-gestao-logistica-main/
-│   └── mobile/            # Aplicativo Flutter
-├── setup.bat              # Script de instalação
-├── start-services.bat     # Script para iniciar serviços
-└── README.md              # Este arquivo
-```
 
 ## 📄 Licença
 
