@@ -5,7 +5,7 @@ import '../../services/delivery_service.dart';
 import '../../services/database_service.dart';
 import '../../models/delivery.dart';
 import '../../widgets/delivery_card.dart';
-import 'delivery_tracking_screen.dart';
+import 'delivery_detail_screen.dart';
 
 class DeliveryHistoryScreen extends StatefulWidget {
   const DeliveryHistoryScreen({Key? key}) : super(key: key);
@@ -16,7 +16,7 @@ class DeliveryHistoryScreen extends StatefulWidget {
 
 class _DeliveryHistoryScreenState extends State<DeliveryHistoryScreen> {
   bool _isLoading = true;
-  List<Delivery> _completedDeliveries = [];
+  List<Delivery> _deliveries = [];
   String? _errorMessage;
 
   @override
@@ -47,17 +47,17 @@ class _DeliveryHistoryScreenState extends State<DeliveryHistoryScreen> {
       final deliveryService = DeliveryService(databaseService);
       final deliveries = await deliveryService.fetchDeliveries(
         userId: user.id,
-        role: 'client',
-        status: 'completed',
+        role: 'driver',
+        status: 'completed', // Entregas concluídas
       );
 
       setState(() {
-        _completedDeliveries = deliveries;
+        _deliveries = deliveries;
         _isLoading = false;
       });
     } catch (e) {
       setState(() {
-        _errorMessage = 'Erro ao carregar histórico: ${e.toString()}';
+        _errorMessage = 'Erro ao carregar entregas: ${e.toString()}';
         _isLoading = false;
       });
     }
@@ -91,7 +91,7 @@ class _DeliveryHistoryScreenState extends State<DeliveryHistoryScreen> {
                       ],
                     ),
                   )
-                : _completedDeliveries.isEmpty
+                : _deliveries.isEmpty
                     ? Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -103,7 +103,7 @@ class _DeliveryHistoryScreenState extends State<DeliveryHistoryScreen> {
                             ),
                             const SizedBox(height: 16),
                             const Text(
-                              'Nenhuma entrega concluída',
+                              'Nenhuma entrega no histórico',
                               style: TextStyle(
                                 fontSize: 16,
                                 color: Colors.grey,
@@ -114,17 +114,18 @@ class _DeliveryHistoryScreenState extends State<DeliveryHistoryScreen> {
                       )
                     : ListView.builder(
                         padding: const EdgeInsets.all(16),
-                        itemCount: _completedDeliveries.length,
+                        itemCount: _deliveries.length,
                         itemBuilder: (context, index) {
-                          final delivery = _completedDeliveries[index];
+                          final delivery = _deliveries[index];
                           return Padding(
                             padding: const EdgeInsets.only(bottom: 16),
                             child: DeliveryCard(
                               delivery: delivery,
+                              isDriver: true,
                               onTap: () {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
-                                    builder: (_) => DeliveryTrackingScreen(
+                                    builder: (_) => DeliveryDetailScreen(
                                       deliveryId: delivery.id,
                                     ),
                                   ),
@@ -137,4 +138,4 @@ class _DeliveryHistoryScreenState extends State<DeliveryHistoryScreen> {
       ),
     );
   }
-}
+} 

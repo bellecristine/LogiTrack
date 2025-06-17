@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:uuid/uuid.dart';
+import 'package:provider/provider.dart';
 
 import '../../services/location_service.dart';
 import '../../models/location_data.dart';
@@ -9,6 +10,7 @@ import '../../services/database_service.dart';
 import '../../models/tracking_update.dart';
 import '../../models/delivery.dart';
 import '../../services/notification_service.dart';
+import '../../services/delivery_service.dart';
 
 class UpdateStatusScreen extends StatefulWidget {
   final String deliveryId;
@@ -32,7 +34,7 @@ class _UpdateStatusScreenState extends State<UpdateStatusScreen> {
   final TextEditingController _descriptionController = TextEditingController();
   final _uuid = const Uuid();
   
-  String _selectedStatus = 'in_transit';
+  String _selectedStatus = '';
   File? _imageFile;
   LocationData? _currentLocation;
   bool _isLoading = false;
@@ -42,7 +44,7 @@ class _UpdateStatusScreenState extends State<UpdateStatusScreen> {
   @override
   void initState() {
     super.initState();
-    _initializeStatus();
+    _selectedStatus = widget.currentStatus;
     _getCurrentLocation();
   }
 
@@ -50,15 +52,6 @@ class _UpdateStatusScreenState extends State<UpdateStatusScreen> {
   void dispose() {
     _descriptionController.dispose();
     super.dispose();
-  }
-
-  void _initializeStatus() {
-    // Definir o próximo status com base no status atual
-    if (widget.currentStatus == 'pending') {
-      _selectedStatus = 'in_transit';
-    } else if (widget.currentStatus == 'in_transit') {
-      _selectedStatus = 'delivered';
-    }
   }
 
   Future<void> _getCurrentLocation() async {
@@ -129,6 +122,11 @@ class _UpdateStatusScreenState extends State<UpdateStatusScreen> {
   }
 
   Future<void> _updateStatus() async {
+    if (_selectedStatus == widget.currentStatus) {
+      Navigator.of(context).pop(false);
+      return;
+    }
+
     if (_currentLocation == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Aguarde a obtenção da localização')),
@@ -150,6 +148,14 @@ class _UpdateStatusScreenState extends State<UpdateStatusScreen> {
     });
 
     try {
+      final databaseService = Provider.of<DatabaseService>(context, listen: false);
+      final deliveryService = DeliveryService(databaseService);
+      
+      await deliveryService.updateDeliveryStatus(
+        widget.deliveryId,
+        _selectedStatus,
+      );
+
       // Em um app real, faríamos upload da foto para um servidor
       // e obteríamos a URL. Aqui, apenas salvamos o caminho local.
       String? photoUrl;
@@ -224,10 +230,6 @@ class _UpdateStatusScreenState extends State<UpdateStatusScreen> {
       
       if (!mounted) return;
       
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Status atualizado com sucesso')),
-      );
-      
       Navigator.of(context).pop(true);
     } catch (e) {
       setState(() {
@@ -296,39 +298,46 @@ class _UpdateStatusScreenState extends State<UpdateStatusScreen> {
               ),
             ),
             const SizedBox(height: 8),
-            if (widget.currentStatus == 'pending') ...[
-              RadioListTile<String>(
-                title: const Text('Em trânsito'),
-                value: 'in_transit',
-                groupValue: _selectedStatus,
-                onChanged: (value) {
-                  setState(() {
-                    _selectedStatus = value!;
-                  });
-                },
-              ),
-            ] else if (widget.currentStatus == 'in_transit') ...[
-              RadioListTile<String>(
-                title: const Text('Entregue'),
-                value: 'delivered',
-                groupValue: _selectedStatus,
-                onChanged: (value) {
-                  setState(() {
-                    _selectedStatus = value!;
-                  });
-                },
-              ),
-              RadioListTile<String>(
-                title: const Text('Cancelado'),
-                value: 'cancelled',
-                groupValue: _selectedStatus,
-                onChanged: (value) {
-                  setState(() {
-                    _selectedStatus = value!;
-                  });
-                },
-              ),
-            ],
+            RadioListTile<String>(
+              title: const Text('Pendente'),
+              value: 'pending',
+              groupValue: _selectedStatus,
+              onChanged: (value) {
+                setState(() {
+                  _selectedStatus = value!;
+                });
+              },
+            ),
+            RadioListTile<String>(
+              title: const Text('Em trânsito'),
+              value: 'in_transit',
+              groupValue: _selectedStatus,
+              onChanged: (value) {
+                setState(() {
+                  _selectedStatus = value!;
+                });
+              },
+            ),
+            RadioListTile<String>(
+              title: const Text('Entregue'),
+              value: 'delivered',
+              groupValue: _selectedStatus,
+              onChanged: (value) {
+                setState(() {
+                  _selectedStatus = value!;
+                });
+              },
+            ),
+            RadioListTile<String>(
+              title: const Text('Cancelado'),
+              value: 'cancelled',
+              groupValue: _selectedStatus,
+              onChanged: (value) {
+                setState(() {
+                  _selectedStatus = value!;
+                });
+              },
+            ),
             const SizedBox(height: 24),
             
             // Localização atual

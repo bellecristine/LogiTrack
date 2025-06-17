@@ -11,6 +11,7 @@ import '../../services/auth_service.dart';
 import '../../models/delivery.dart';
 import '../../models/tracking_update.dart';
 import '../../widgets/tracking_timeline.dart';
+import 'update_status_screen.dart';
 
 
 class DeliveryDetailScreen extends StatefulWidget {
@@ -247,7 +248,7 @@ class _DeliveryDetailScreenState extends State<DeliveryDetailScreen> {
     const lat = -22.906847;
     const lng = -43.172897;
     
-    final url = 'https://www.google.com/maps/dir/?api=1&destination=$lat,$lng';
+    const url = 'https://www.google.com/maps/dir/?api=1&destination=$lat,$lng';
     
     if (await canLaunchUrl(Uri.parse(url))) {
       await launchUrl(Uri.parse(url));

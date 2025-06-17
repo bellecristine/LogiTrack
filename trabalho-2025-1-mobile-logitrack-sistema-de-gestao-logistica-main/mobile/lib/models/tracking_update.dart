@@ -21,7 +21,7 @@ class TrackingUpdate {
   });
 
   factory TrackingUpdate.fromJson(Map<String, dynamic> json) {
-    var locationData;
+    LocationData locationData;
     if (json['location'] is String) {
       try {
         locationData = LocationData.fromJson(jsonDecode(json['location']));

@@ -65,15 +65,13 @@ class LocationService {
   }
 
   Stream<model.LocationData> getLocationStream() {
-    if (_locationStream == null) {
-      _locationStream = _location.onLocationChanged.map((loc.LocationData locationData) {
+    _locationStream ??= _location.onLocationChanged.map((loc.LocationData locationData) {
         return model.LocationData(
           latitude: locationData.latitude ?? 0.0,
           longitude: locationData.longitude ?? 0.0,
           address: 'Localização atual', 
         );
       });
-    }
     
     return _locationStream!;
   }

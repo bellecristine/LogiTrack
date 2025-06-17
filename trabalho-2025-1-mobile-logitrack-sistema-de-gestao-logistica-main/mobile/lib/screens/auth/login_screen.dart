@@ -3,10 +3,13 @@ import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../services/auth_service.dart';
+import '../../models/user.dart';
 import '../../widgets/custom_button.dart';
+import '../../widgets/custom_text_field.dart';
 import 'register_screen.dart';
 import '../client/client_home_screen.dart';
 import '../driver/driver_home_screen.dart';
+import '../operator/operator_home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);

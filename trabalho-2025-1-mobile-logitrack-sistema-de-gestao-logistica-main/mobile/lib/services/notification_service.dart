@@ -3,10 +3,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tz_data;
 import 'dart:convert';
+import 'package:flutter/material.dart';
 
-class NotificationService {
+class NotificationService extends ChangeNotifier {
   final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  int _unreadCount = 0;
+  List<Map<String, dynamic>> _notifications = [];
   
+  int get unreadCount => _unreadCount;
+
   // Inicializar o serviço de notificações
   Future<void> initialize() async {
     // Inicializar timezone
@@ -189,5 +194,47 @@ class NotificationService {
     
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('notifications_history');
+  }
+
+  Future<List<Map<String, dynamic>>> getNotificationHistory() async {
+    // TODO: Implementar integração com backend
+    // Por enquanto, retorna dados mockados
+    return [
+      {
+        'id': '1',
+        'title': 'Nova entrega',
+        'body': 'Você tem uma nova entrega disponível',
+        'timestamp': DateTime.now().toIso8601String(),
+        'read': false,
+      },
+      {
+        'id': '2',
+        'title': 'Entrega atualizada',
+        'body': 'O status da sua entrega foi atualizado',
+        'timestamp': DateTime.now().subtract(const Duration(hours: 1)).toIso8601String(),
+        'read': true,
+      },
+    ];
+  }
+
+  Future<void> markAllNotificationsAsRead() async {
+    // TODO: Implementar integração com backend
+    _unreadCount = 0;
+    notifyListeners();
+  }
+
+  void addNotification(String title, String body) {
+    _notifications.insert(
+      0,
+      {
+        'id': DateTime.now().millisecondsSinceEpoch.toString(),
+        'title': title,
+        'body': body,
+        'timestamp': DateTime.now().toIso8601String(),
+        'read': false,
+      },
+    );
+    _unreadCount++;
+    notifyListeners();
   }
 }
