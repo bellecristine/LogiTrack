@@ -8,19 +8,12 @@ Este é o ponto central de entrada para o sistema LogiTrack, roteando requisiç�
    ```bash
    npm install
    ```
-
-2. Configure as variáveis de ambiente (opcional):
-   Crie um arquivo `.env` na pasta `api-gateway` se quiser customizar as URLs dos serviços ou a porta do gateway.
-   
-   Exemplo:
-   ```env
-   PORT=3000
-   AUTH_SERVICE_URL=http://localhost:3001
-   TRACKING_SERVICE_URL=http://localhost:3002
-   ALLOWED_ORIGINS=http://localhost:3000
+2. Inicie os microsserviços
+   ```bash
+   npm start
    ```
 
-3. Inicie o gateway:
+2. Inicie o gateway:
    ```bash
    npm start
    ```
@@ -34,8 +27,3 @@ Este é o ponto central de entrada para o sistema LogiTrack, roteando requisiç�
 - `/tracking/health` → health check do Tracking Service
 - `/tracking/info` → info do Tracking Service
 - `/health` → health check do próprio gateway
-
-## Observações
-- O gateway não deve conter lógica de negócio, apenas roteamento e segurança.
-- Certifique-se de que os serviços estejam rodando nas portas corretas.
-- Para produção, ajuste as variáveis de ambiente conforme necessário. 
