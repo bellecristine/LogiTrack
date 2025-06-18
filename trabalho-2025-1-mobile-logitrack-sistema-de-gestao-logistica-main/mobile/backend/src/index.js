@@ -7,6 +7,7 @@ const rateLimit = require('express-rate-limit');
 const { errorHandler } = require('./middleware/errorHandler');
 const routes = require('./routes');
 const logger = require('./utils/logger');
+const orderRoutes = require('./order.routes');
 
 const app = express();
 
@@ -28,6 +29,10 @@ app.use('/api', routes);
 
 // Error handling
 app.use(errorHandler);
+
+// Rota de pedidos
+app.use('/api/orders', orderRoutes);
+router.use('/orders', orderRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
