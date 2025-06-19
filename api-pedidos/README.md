@@ -1,23 +1,23 @@
-# 📦 API de Pedidos - LogiTrack
+# 📦 LogiTrack - API de Pedidos
 
-Este serviço é responsável pelo gerenciamento de pedidos dentro da plataforma **LogiTrack**. Ele se comunica com outros microserviços por meio de um **API Gateway**, utiliza **MongoDB** como banco de dados e a **OpenRouteService API** para funcionalidades de rota e geolocalização.
+API de gerenciamento de pedidos do sistema **LogiTrack**, integrando funcionalidades de rastreamento e autenticação via **API Gateway**. Utiliza **MongoDB** como banco de dados e **OpenRouteService** para geolocalização e rotas.
 
 ---
 
 ## 🚀 Como Rodar
 
-### 1. Clonar o Repositório
+### 1. Clone o repositório
 
 ```bash
 git clone https://github.com/seu-usuario/api-pedidos.git
 cd api-pedidos
-2. Instalar Dependências
+2. Instale as dependências
 bash
 Copiar
 Editar
 npm install
-3. Configurar Variáveis de Ambiente
-Crie um arquivo .env na raiz do projeto com o seguinte conteúdo:
+3. Configure o arquivo .env
+Crie um arquivo .env na raiz do projeto com as seguintes variáveis:
 
 env
 Copiar
@@ -25,69 +25,88 @@ Editar
 PORT=3000
 MONGO_URI=mongodb://localhost:27017/api-pedidos
 OPENROUTE_API_KEY=5b3ce3597851110001cf6248e31b6ec87a07403ebce83e5e97e31f5a
-⚠️ Importante: Não compartilhe sua chave real de API publicamente. Adicione o .env ao .gitignore.
+⚠️ Importante: Não compartilhe sua chave real publicamente. Adicione o .env ao .gitignore.
 
-4. Iniciar a API
+4. Inicie a aplicação
 bash
 Copiar
 Editar
 npm start
-A API será executada em: http://localhost:3000
+A API estará disponível em: http://localhost:3000
 
-📡 Rotas Disponíveis (via API Gateway)
+🌐 Rotas Disponíveis
 🔐 Auth Service
-GET /auth/* → Redireciona para o Auth Service (/api/auth/*)
-
-GET /users/* → Redireciona para o Auth Service (/api/users/*)
+Rota	Descrição
+/auth/*	Encaminha para o serviço de autenticação
+/users/*	Encaminha para o serviço de usuários
 
 🚚 Tracking Service
-GET /tracking/deliveries/* → Redireciona para o Tracking Service (/api/deliveries/*)
-
-GET /tracking/locations/* → Redireciona para o Tracking Service (/api/locations/*)
-
-GET /tracking/health → Health check do Tracking Service
-
-GET /tracking/info → Informações do Tracking Service
+Rota	Descrição
+/tracking/deliveries/*	Requisições para entregas
+/tracking/locations/*	Localizações e rotas
+/tracking/health	Health check do serviço de tracking
+/tracking/info	Informações sobre o serviço
 
 ❤️ API Gateway
-GET /health → Health check do próprio Gateway
+Rota	Descrição
+/health	Health check do próprio gateway
 
-🗺️ Como Obter uma Chave da OpenRouteService
+📦 Pedidos (API atual)
+Método	Rota	Descrição
+POST	/pedidos	Criar um novo pedido
+GET	/pedidos	Listar todos os pedidos
+GET	/pedidos/:id	Buscar pedido por ID
+PUT	/pedidos/:id	Atualizar um pedido
+DELETE	/pedidos/:id	Excluir um pedido
+
+🗺️ Chave da OpenRouteService
+Para funcionalidades de rota e geolocalização:
+
 Acesse: https://openrouteservice.org/sign-up/
 
 Crie uma conta gratuita.
 
-Acesse o painel do usuário e gere uma API Key.
+Gere sua API Key no painel de usuário.
 
-Cole a chave no arquivo .env no campo OPENROUTE_API_KEY.
+Adicione a chave ao seu .env como OPENROUTE_API_KEY.
 
 🧪 Testes
-Você pode utilizar ferramentas como Postman, Insomnia ou cURL para testar os endpoints disponíveis.
+Recomenda-se utilizar ferramentas como:
 
-📁 Estrutura do Projeto (Exemplo)
+Postman
+
+Insomnia
+
+cURL
+
+📁 Estrutura do Projeto
 pgsql
 Copiar
 Editar
 api-pedidos/
 ├── src/
 │   ├── controllers/
+│   ├── models/
 │   ├── routes/
 │   ├── services/
-│   ├── models/
 │   └── index.js
 ├── .env
 ├── package.json
 └── README.md
-🛠️ Tecnologias Utilizadas
+🛠 Tecnologias Utilizadas
 Node.js
 
 Express.js
 
-MongoDB
-
-Mongoose
+MongoDB + Mongoose
 
 OpenRouteService API
 
+API Gateway
+
+Microsserviços REST
+
 🤝 Contribuição
-Contribuições são bem-vindas! Sinta-se à vontade para abrir um issue ou enviar um pull request.
+Contribuições são bem-vindas!
+Sinta-se à vontade para abrir issues, enviar pull requests ou propor melhorias.
+
