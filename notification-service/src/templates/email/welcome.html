@@ -1,0 +1,42 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bem-vindo ao {{appName}}</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background: #2563eb; color: white; padding: 20px; text-align: center; }
+        .content { padding: 20px; background: #f9f9f9; }
+        .footer { text-align: center; padding: 20px; font-size: 12px; color: #666; }
+        .button { background: #10b981; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; display: inline-block; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Bem-vindo ao {{appName}}!</h1>
+        </div>
+        <div class="content">
+            <p>Olá {{userName}},</p>
+            <p>Seja bem-vindo(a) ao {{appName}}! Estamos muito felizes em tê-lo(a) conosco.</p>
+            <p>Com nossa plataforma, você pode:</p>
+            <ul>
+                <li>Rastrear suas entregas em tempo real</li>
+                <li>Receber notificações sobre o status das entregas</li>
+                <li>Gerenciar seus pedidos de forma eficiente</li>
+                <li>Acessar histórico completo de entregas</li>
+            </ul>
+            <p style="text-align: center;">
+                <a href="{{dashboardUrl}}" class="button">Acessar Dashboard</a>
+            </p>
+        </div>
+        <div class="footer">
+            <p>© {{currentYear}} {{appName}}. Todos os direitos reservados.</p>
+            <p>Em caso de dúvidas, entre em contato: {{supportEmail}}</p>
+        </div>
+    </div>
+</body>
+</html>

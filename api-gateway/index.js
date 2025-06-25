@@ -11,6 +11,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const AUTH_SERVICE_URL = process.env.AUTH_SERVICE_URL || 'http://localhost:3001';
 const TRACKING_SERVICE_URL = process.env.TRACKING_SERVICE_URL || 'http://localhost:3002';
+const NOTIFICATION_SERVICE_URL = process.env.NOTIFICATION_SERVICE_URL || 'http://localhost:3003';
 
 // Segurança
 app.use(helmet());
@@ -33,7 +34,8 @@ app.get('/health', (req, res) => {
     timestamp: new Date().toISOString(),
     routes: {
       auth: '/auth',
-      tracking: '/tracking'
+      tracking: '/tracking',
+      notifications: '/notifications'
     }
   });
 });
@@ -76,6 +78,25 @@ app.use('/tracking/info', createProxyMiddleware({
   target: TRACKING_SERVICE_URL,
   changeOrigin: true,
   pathRewrite: { '^/tracking/info': '/api/info' },
+}));
+
+// Proxy para Notification Service
+app.use('/notifications', createProxyMiddleware({
+  target: NOTIFICATION_SERVICE_URL,
+  changeOrigin: true,
+  pathRewrite: { '^/notifications': '/api' },
+}));
+
+// Proxy para health/info do Notification Service
+app.use('/notifications/health', createProxyMiddleware({
+  target: NOTIFICATION_SERVICE_URL,
+  changeOrigin: true,
+  pathRewrite: { '^/notifications/health': '/health' },
+}));
+app.use('/notifications/info', createProxyMiddleware({
+  target: NOTIFICATION_SERVICE_URL,
+  changeOrigin: true,
+  pathRewrite: { '^/notifications/info': '/info' },
 }));
 
 // Rota para enviar e-mail via Lambda 
