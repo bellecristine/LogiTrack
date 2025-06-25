@@ -78,6 +78,46 @@ app.use('/tracking/info', createProxyMiddleware({
   pathRewrite: { '^/tracking/info': '/api/info' },
 }));
 
+// Rota para enviar e-mail via Lambda 
+app.post('/api/send-email', async (req, res) => {
+  try {
+    const { nomeEntrega, destinatario } = req.body;
+    
+    if (!nomeEntrega || !destinatario) {
+      return res.status(400).json({
+        error: 'Parâmetros obrigatórios não fornecidos: nomeEntrega e destinatario'
+      });
+    }
+
+    const payload = {
+      nomeEntrega,
+      destinatario
+    };
+
+    const command = new InvokeCommand({
+      FunctionName: 'emailSender', 
+      Payload: JSON.stringify(payload),
+      InvocationType: 'RequestResponse'
+    });
+
+    const { Payload } = await lambdaClient.send(command);
+    const result = JSON.parse(Buffer.from(Payload).toString());
+    
+    res.status(200).json({
+      success: true,
+      message: result.body
+    });
+    
+  } catch (error) {
+    console.error('Erro ao invocar Lambda:', error);
+    res.status(500).json({
+      error: 'Falha ao enviar e-mail',
+      details: error.message
+    });
+  }
+});
+
+
 // 404 para rotas não encontradas
 app.use('*', (req, res) => {
   res.status(404).json({
