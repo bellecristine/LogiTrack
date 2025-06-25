@@ -1,0 +1,29 @@
+# AWS CLI Installer
+AWSCLIV2.msi
+
+# Node modules
+node_modules/
+
+# Environment files (keep aws.env as it's needed for deploy)
+.env
+.env.local
+.env.production
+
+# Logs
+*.log
+logs/
+
+# AWS deployment artifacts
+.serverless/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+
+# Temporary files
+*.tmp
+*.temp 
