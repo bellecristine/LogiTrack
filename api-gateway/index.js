@@ -36,6 +36,18 @@ app.get('/health', (req, res) => {
       auth: '/auth',
       tracking: '/tracking',
       notifications: '/notifications'
+    },
+    services: {
+      auth: AUTH_SERVICE_URL,
+      tracking: TRACKING_SERVICE_URL,
+      notifications: NOTIFICATION_SERVICE_URL
+    },
+    endpoints: {
+      notificationTrigger: '/notifications/trigger',
+      deviceRegistration: '/notifications/register-device',
+      notificationSettings: '/notifications/settings/:deviceId',
+      notificationHistory: '/notifications/history',
+      notificationStats: '/notifications/stats'
     }
   });
 });
@@ -80,11 +92,43 @@ app.use('/tracking/info', createProxyMiddleware({
   pathRewrite: { '^/tracking/info': '/api/info' },
 }));
 
-// Proxy para Notification Service
-app.use('/notifications', createProxyMiddleware({
+// Proxy para Notification Service - Trigger de notificações
+app.use('/notifications/trigger', createProxyMiddleware({
   target: NOTIFICATION_SERVICE_URL,
   changeOrigin: true,
-  pathRewrite: { '^/notifications': '/api' },
+  pathRewrite: { '^/notifications/trigger': '/api/notifications/trigger' },
+  onProxyReq: (proxyReq, req, res) => {
+    // Adicionar header de identificação do API Gateway
+    proxyReq.setHeader('X-Gateway-Source', 'api-gateway');
+    proxyReq.setHeader('X-Request-ID', `gw_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`);
+  }
+}));
+
+// Proxy para Notification Service - Registro de dispositivos
+app.use('/notifications/register-device', createProxyMiddleware({
+  target: NOTIFICATION_SERVICE_URL,
+  changeOrigin: true,
+  pathRewrite: { '^/notifications/register-device': '/api/notifications/register-device' },
+}));
+
+// Proxy para Notification Service - Configurações
+app.use('/notifications/settings', createProxyMiddleware({
+  target: NOTIFICATION_SERVICE_URL,
+  changeOrigin: true,
+  pathRewrite: { '^/notifications/settings': '/api/notifications/settings' },
+}));
+
+// Proxy para Notification Service - Histórico e estatísticas
+app.use('/notifications/history', createProxyMiddleware({
+  target: NOTIFICATION_SERVICE_URL,
+  changeOrigin: true,
+  pathRewrite: { '^/notifications/history': '/api/notifications/history' },
+}));
+
+app.use('/notifications/stats', createProxyMiddleware({
+  target: NOTIFICATION_SERVICE_URL,
+  changeOrigin: true,
+  pathRewrite: { '^/notifications/stats': '/api/notifications/stats' },
 }));
 
 // Proxy para health/info do Notification Service
@@ -93,6 +137,7 @@ app.use('/notifications/health', createProxyMiddleware({
   changeOrigin: true,
   pathRewrite: { '^/notifications/health': '/health' },
 }));
+
 app.use('/notifications/info', createProxyMiddleware({
   target: NOTIFICATION_SERVICE_URL,
   changeOrigin: true,

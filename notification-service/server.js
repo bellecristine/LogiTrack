@@ -14,9 +14,13 @@ const logger = require('./src/utils/logger');
 const queueService = require('./src/services/QueueService');
 const emailService = require('./src/services/EmailService');
 const webSocketService = require('./src/services/WebSocketService');
+const pushNotificationService = require('./src/services/PushNotificationService');
 
 // Importar workers
 const EmailWorker = require('./src/workers/EmailWorker');
+
+// Importar rotas
+const notificationRoutes = require('./src/routes/notifications');
 
 class NotificationServer {
   constructor() {
@@ -106,6 +110,9 @@ class NotificationServer {
 
       // Inicializar serviço de e-mail
       await emailService.initialize();
+
+      // Inicializar push notifications
+      await pushNotificationService.initialize();
 
       logger.info('All services initialized successfully');
     } catch (error) {
@@ -221,7 +228,8 @@ class NotificationServer {
             redis: 'connected',
             email: await emailService.getEmailStats(),
             websocket: webSocketService.getStats(),
-            queues: await queueService.getAllQueueStats()
+            queues: await queueService.getAllQueueStats(),
+            pushNotifications: pushNotificationService.initialized
           }
         };
 
@@ -267,6 +275,9 @@ class NotificationServer {
         method: req.method
       });
     });
+
+    // Rotas de notificações
+    this.app.use('/api/notifications', notificationRoutes);
 
     // 404 handler
     this.app.use('*', (req, res) => {
@@ -371,7 +382,8 @@ class NotificationServer {
       await Promise.all([
         webSocketService.shutdown(),
         queueService.shutdown(),
-        emailService.shutdown()
+        emailService.shutdown(),
+        pushNotificationService.shutdown()
       ]);
 
       logger.info('✅ Graceful shutdown completed');
