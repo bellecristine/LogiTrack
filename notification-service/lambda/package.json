@@ -1,0 +1,38 @@
+{
+  "name": "logitrack-notification-lambda",
+  "version": "1.0.0",
+  "description": "AWS Lambda function for LogiTrack push notifications via Firebase",
+  "main": "notification-handler.js",
+  "scripts": {
+    "test": "node test-lambda-local.js",
+    "dev": "serverless offline",
+    "deploy": "serverless deploy --stage prod",
+    "deploy-dev": "serverless deploy --stage dev",
+    "remove": "serverless remove --stage prod",
+    "logs": "serverless logs -f notificationHandler --stage prod",
+    "info": "serverless info --stage prod",
+    "package": "zip -r notification-lambda.zip .",
+    "aws-deploy": "aws lambda update-function-code --function-name logitrack-notifications --zip-file fileb://notification-lambda.zip"
+  },
+  "keywords": [
+    "aws",
+    "lambda",
+    "firebase",
+    "push-notifications",
+    "logitrack",
+    "serverless"
+  ],
+  "author": "LogiTrack Team",
+  "license": "MIT",
+  "dependencies": {
+    "firebase-admin": "^12.0.0"
+  },
+  "devDependencies": {
+    "serverless": "^3.38.0",
+    "serverless-offline": "^13.3.0",
+    "serverless-dotenv-plugin": "^6.0.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+} 
